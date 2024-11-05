@@ -13,6 +13,7 @@ function App() {
                     const hasCustomComponent = React.Children.toArray(children).some((child) => child?.type === TestComponent);
                     return hasCustomComponent ? children : <p>{children}</p>;
                 },
+                // Würde sonst ein Fehler geben. Einfache Lösung: Eigene Komponenten in einem Seperaten abschnitt verwenden
                 custom: TestComponent,
                 test: Test,
             },
@@ -20,7 +21,7 @@ function App() {
     });
 
     useEffect(() => {
-        fetch("/mark1.mdx")
+        fetch("/mark1.md")
             .then((response) => response.text())
             .then((text) => setMarkdownSource(text))
             .catch((error) => console.error("Error fetching markdown:", error));
