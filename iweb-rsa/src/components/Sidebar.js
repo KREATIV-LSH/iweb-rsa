@@ -25,12 +25,12 @@ function Sidebar({ chaptersData, currentId }) {
                         const subChapters = childChapters.filter((childChapter) => childChapter.parent === chapter.title);
                         return (
                             <li key={chapter.title} className={`${(chapter.id === currentId) && 'font-bold'} hover:text-white`}>
-                                <Link to={`/article/${chapter.id}`}>{chapter.title}</Link>
+                                <button type="button" onClick={() => {window.location = `/article/${chapter.id}`;}}>{chapter.title}</button>
                                 {subChapters && (
                                     <ul className="pl-4">
                                         {subChapters.map((subChapter) => (
                                             <li key={subChapter.title} className={`${(subChapter.id === currentId) ? 'font-bold' : 'font-normal'} hover:text-white`}>
-                                                <Link to={`/article/${subChapter.id}`}>{subChapter.title}</Link>
+                                                <button type="button" onClick={() => {window.location = `/article/${subChapter.id}`;}}>{subChapter.title}</button>
                                             </li>
                                         ))}
                                     </ul>
