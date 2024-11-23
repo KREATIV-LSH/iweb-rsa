@@ -1,8 +1,8 @@
 const chaptersData = [
     {
         id: 1,
-        title: "Chapter 1",
-        location: "/static/markdown/Chapter1.md",
+        title: "1. Verschlüsselung Einführung",
+        location: "/static/markdown/1.VerschluesselungEinfuerung.md",
         parent: null,
     },
     {

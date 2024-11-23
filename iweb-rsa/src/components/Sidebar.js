@@ -19,7 +19,7 @@ function Sidebar({ chaptersData, currentId }) {
             <button type="button" className="p-2 bg-gray-800 focus:outline-none" onClick={toggleSidebar}>
                 <FontAwesomeIcon icon={faBars} />
             </button>
-            <aside className={!isOpen ? "hidden" : "w-1/4 max-w-36 bg-gray-800 border-r border-gray-700 p-4 pl-0 overflow-y-auto"}>
+            <aside className={!isOpen ? "hidden" : "w-1/4 max-w-44 bg-gray-800 border-r border-gray-700 p-4 pl-0 overflow-y-auto"}>
                 <ul className="space-y-2">
                     {parentChapters.map((chapter) => {
                         const subChapters = childChapters.filter((childChapter) => childChapter.parent === chapter.title);
