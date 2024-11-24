@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import { chapters, chaptersData } from "./Chapters";
 import { useRemark } from "react-remark";
 import rehypeRaw from "rehype-raw";
+import classNames from "classnames";
 
 function Article() {
     // Markdown rendering
@@ -27,7 +28,7 @@ function Article() {
         return <Navigate to="/" />;
     }
 
-    setMarkdownSource(chapters[id-1].content);
+    setMarkdownSource(chapters[id - 1].content);
     return (
         <div className="flex h-screen bg-gray-900 text-gray-200">
             <div className="flex flex-col h-screen w-screen">
@@ -35,7 +36,31 @@ function Article() {
                 <div className="flex flex-grow overflow-hidden">
                     <Sidebar chaptersData={chaptersData} currentId={id} />
                     <div className="flex-grow p-4 overflow-auto">
-                        {reactContent}
+                        <div>{reactContent}</div>
+                        <div className="flex mt-4">
+                            <button
+                                type="button"
+                                className={classNames("bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded", {
+                                    "bg-gray-500 cursor-not-allowed hover:bg-gray-500": id === 1,
+                                })}
+                                onClick={() => {
+                                    window.location = `/article/${id - 1}`;
+                                }}
+                                disabled={id === 1}>
+                                Zurück
+                            </button>
+                            <button
+                                type="button"
+                                className={classNames("bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-auto", {
+                                    "bg-gray-500 cursor-not-allowed hover:bg-gray-500": id === chaptersData.length,
+                                })}
+                                onClick={() => {
+                                    window.location = `/article/${id + 1}`;
+                                }}
+                                disabled={id === chaptersData.length}>
+                                Weiter
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
