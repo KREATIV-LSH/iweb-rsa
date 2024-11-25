@@ -6,6 +6,7 @@ import { chapters, chaptersData } from "./Chapters";
 import { useRemark } from "react-remark";
 import rehypeRaw from "rehype-raw";
 import classNames from "classnames";
+import Quiz_1_2 from "./components/quizes/Quiz_1_2";
 
 function Article() {
     // Markdown rendering
@@ -14,7 +15,9 @@ function Article() {
         remarkToRehypeOptions: { allowDangerousHtml: true },
         rehypeReactOptions: {
             createElement: React.createElement,
-            components: {},
+            components: {
+                quiz1: Quiz_1_2,
+            },
         },
     });
 
