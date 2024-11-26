@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 function Sidebar({ chaptersData, currentId }) {
     const [isOpen, setIsOpen] = useState(true);

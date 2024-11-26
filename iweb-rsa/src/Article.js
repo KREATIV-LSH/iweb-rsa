@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
@@ -6,7 +6,7 @@ import { chapters, chaptersData } from "./Chapters";
 import { useRemark } from "react-remark";
 import rehypeRaw from "rehype-raw";
 import classNames from "classnames";
-import Quiz_1_2 from "./components/quizes/Quiz_1_2";
+import { Quiz_1, Quiz_1_2 } from "./components/quizes/Quizes";
 
 function Article() {
     // Markdown rendering
@@ -16,6 +16,7 @@ function Article() {
         rehypeReactOptions: {
             createElement: React.createElement,
             components: {
+                quiz0: Quiz_1,
                 quiz1: Quiz_1_2,
             },
         },
@@ -23,15 +24,19 @@ function Article() {
 
     // Params
     const { id: strId } = useParams();
-
     const id = Number.parseInt(strId);
-    // console.log(id);
+
+    useEffect(() => {
+        if (!chaptersData.some((chapter) => chapter.id === id) || Number.isNaN(id)) {
+            return <Navigate to="/" />;
+        }
+        setMarkdownSource(chapters[id - 1].content);
+    }, [id, setMarkdownSource]);
 
     if (!chaptersData.some((chapter) => chapter.id === id) || Number.isNaN(id)) {
         return <Navigate to="/" />;
     }
 
-    setMarkdownSource(chapters[id - 1].content);
     return (
         <div className="flex h-screen bg-gray-900 text-gray-200">
             <div className="flex flex-col h-screen w-screen">
