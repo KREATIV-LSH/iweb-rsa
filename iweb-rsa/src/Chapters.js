@@ -17,6 +17,12 @@ const chaptersData = [
         location: "/static/markdown/1.2.AsymmetrischeVerschlüsselungen.md",
         parent: "1. Verschlüsselung Einführung",
     },
+    {
+        id: 4,
+        title: "2 RSA-Verschlüsselung",
+        location: "/static/markdown/2.RSA-Verschlüsselung.md",
+        parent: null,
+    },
 ];
 
 const chapters = await fetchChapters();

@@ -5,14 +5,18 @@ import Sidebar from "./components/Sidebar";
 import { chapters, chaptersData } from "./Chapters";
 import { useRemark } from "react-remark";
 import rehypeRaw from "rehype-raw";
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 import classNames from "classnames";
 import { Quiz_1, Quiz_1_2 } from "./components/quizes/Quizes";
+import 'katex/dist/katex.min.css';
 
 function Article() {
     // Markdown rendering
     const [reactContent, setMarkdownSource] = useRemark({
-        rehypePlugins: [rehypeRaw],
+        rehypePlugins: [rehypeKatex, rehypeRaw],
         remarkToRehypeOptions: { allowDangerousHtml: true },
+        remarkPlugins: [remarkMath],
         rehypeReactOptions: {
             createElement: React.createElement,
             components: {
