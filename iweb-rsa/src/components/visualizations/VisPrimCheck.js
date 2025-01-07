@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { InlineMath } from "react-katex";
 
 function VisPrimCheck() {
     const [p, setP] = useState(null);

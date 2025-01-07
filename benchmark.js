@@ -1,17 +1,3 @@
-# 3.1 Schlüssel Erstellung: Primzahlen mit Miller Rabin
-Der erste und wichtigste Schritt der Schlüsselerstellung ist, das wie im Kapitel [2 RSA-Verschlüsselung](/article/4) beschriebene Wählen von zwei Primzahlen. <br>
-Um solche Primzahlen zu finden gibt es verschiedene Algorithmen.
-Ein sehr bekannter davon ist der Miller-Rabin Algorithmus, **wobei dieser garnicht zum Erstellen von Primzahlen genutzt wird**, sondern nur zum überprüfen.
-<br>
-<br>
-
-## Implementation von Miller-Rabin
-Hier folgt eine einfache Implementierung nach diesem [Wikipedia-Artikel](https://de.wikipedia.org/wiki/Miller-Rabin-Test):
-<br>
-
-(Hier geltend für alle **ungeraden** Zahlen grösser 5)
-
-```javascript
 function mrt(n, basis) {
     let exponent = (n - 1) / 2;
     let halbierungen = 1; // Zählt wie oft der Exponent halbiert wurde
@@ -45,11 +31,7 @@ function mrt(n, basis) {
     }
     return false;
 }
-```
-<br>
-Und hier ein kleiner "Wrapper", um die Sonderfälle abzufangen und die Genauigkeit durch mehrere Itterationen zu verbessern:
 
-```javascript
 function istPrim(n, wiederholungen = 5) {
     if (Number.isNaN(n)) return false;
     if (n <= 1) return false; // 1, 0 und alle negativen Zahlen sind keine Primzahlen
@@ -66,24 +48,8 @@ function istPrim(n, wiederholungen = 5) {
 
     return true;
 }
-```
 
-<br>
-
-### Hier kannst du genau diese Funktion gleich ausprobieren:
-<VisPrimCheck></VisPrimCheck>
-
-<br>
-
-## Erstellung von Primzahlen
-Jezt können wir zwar überprüfen, ob eine Zahl prim ist, aber eine Primzahl erstellen können wir immernoch nicht. <br>
-Ein einfacher und guter Ansatz um nun weiter zu machen, ist einfach ganz viele zufällige Zahlen zu generieren, bis eine davon prim ist. <br>
-<br>
-
-Hier eine einfache Implementation basierend auf den anderen Funktionen:
-
-```javascript
-function erstellePrim(minimum, maximum) {
+function erstellePrim1(minimum, maximum) {
     let zuffalsZahl;
 
     // Solange eine Zufallszahl generieren, bis die Zahl eine Primzahl ist
@@ -94,22 +60,10 @@ function erstellePrim(minimum, maximum) {
         
     return zuffalsZahl;
 }
-```
 
-<br>
-Die Funktion tut genau das was sie sollte, jedoch für grosse Zahlen, wie wir sie für eine sichere Verschlüsselung brauchen, braucht es zu lange.
-<br>
-Eine sehr einfache optimierung ist nur ungerade Zahlen generieren zu lassen, da wir somit gleich den Suchbereich halbieren.
-Dazu Verwenden wir eine Binäroperation `& 1` und stellen somit sicher, dass der "kleinste" Bit immer an ist und somit nicht gerade sein kann.
-<br>
-Auch sieht man im Script unten, eine Liste von den ersten Primzahlen, diese Liste wird verwendet, um zu überprüfen ob die Zufallszahl durch diese Primzahlen teilbar ist.
-Das tut man, weil jede nicht Primzahl ein Faktor aus Primzahlen ist (Primfaktorzerlegung), also kann man ziemlich schnell Zahlen ausschliesen, wenn sie durch diese Primzahlen teilbar sind.
-
-```javascript
-// Die ersten 30 Primzahlen
 const knownPrimes = [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127];
 
-function erstellePrim(minimum, maximum) {
+function erstellePrim2(minimum, maximum) {
     let zuffalsZahl;
 
     // Solange eine Zufallszahl generieren, bis die Zahl eine Primzahl ist
@@ -134,13 +88,20 @@ function erstellePrim(minimum, maximum) {
         
     return zuffalsZahl;
 }
-```
 
-<br>
+function benchmark(func, label, min, max, iterations = 1000) {
+    const start = performance.now();
+    for (let i = 0; i < iterations; i++) {
+        func(min, max);
+    }
+    const end = performance.now();
+    console.log(`${label} took ${(end - start).toFixed(2)} milliseconds for ${iterations} iterations.`);
+}
 
-#### Diese Optimierung macht die Primzahlerstellung direkt **~70% schneller**:
-- Einfache Primzahlerstellung (Funktion 1): `23751ms = 24sek`
-- Erweiterte Primzahlerstellung (Funktion 2):   `7110ms =  7sek`
-(Erstellungsberreich von 100'000'000 zu 200'000'000, jeweils 2000 Durchläufe, Node.js runtime)
 
-<VisPrimGen></VisPrimGen>
+const min = 100000000;
+const max = min * 2;
+const iterations = 2000;
+
+benchmark(erstellePrim1, "erstellePrim1", min, max, iterations);
+benchmark(erstellePrim2, "erstellePrim2", min, max, iterations);

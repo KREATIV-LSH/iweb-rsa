@@ -43,7 +43,7 @@ const chaptersData = [
     },
     {
         id: 8,
-        title: "3.1 Schlüssel Erstellung & Primzahlen mit Miller Rabin",
+        title: "3.1 Schlüssel Erstellung: Primzahlen mit Miller Rabin",
         location: "/static/markdown/3/3.1.SchlüsselErstellung+Primzahlen.md",
         parent: "3 Implementation",
     },

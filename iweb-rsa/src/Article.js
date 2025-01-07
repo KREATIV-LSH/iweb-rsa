@@ -16,6 +16,7 @@ import { Quiz_1, Quiz_1_2 } from "./components/quizes/Quizes";
 import "katex/dist/katex.min.css";
 import VisKeyGeneration from "./components/visualizations/VisKeyGeneration";
 import VisPrimCheck from "./components/visualizations/VisPrimCheck";
+import VisPrimGen from "./components/visualizations/VisPrimGen";
 
 function Article() {
     // Markdown rendering
@@ -39,6 +40,7 @@ function Article() {
                 quiz1: Quiz_1_2,
                 viskeygen: VisKeyGeneration,
                 visprimcheck: VisPrimCheck,
+                visprimgen: VisPrimGen,
             },
         },
     });
