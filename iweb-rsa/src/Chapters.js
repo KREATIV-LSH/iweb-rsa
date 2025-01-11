@@ -43,10 +43,17 @@ const chaptersData = [
     },
     {
         id: 8,
-        title: "3.1 Schlüssel Erstellung: Primzahlen mit Miller Rabin",
-        location: "/static/markdown/3/3.1.SchlüsselErstellung+Primzahlen.md",
+        title: "3.1.1 Schlüssel Erstellung: Primzahlen mit Miller Rabin",
+        location: "/static/markdown/3/3.1.1.SchlüsselErstellung+Primzahlen.md",
         parent: "3 Implementation",
     },
+    {
+        id: 9,
+        title: "3.1.2 Schlüssel Erstellung",
+        location: "/static/markdown/3/3.1.2.SchlüsselErstellung.md",
+        parent: "3 Implementation",
+    },
+
 ];
 
 const chapters = await fetchChapters();
