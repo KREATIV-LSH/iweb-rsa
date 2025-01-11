@@ -53,6 +53,12 @@ const chaptersData = [
         location: "/static/markdown/3/3.1.2.SchlüsselErstellung.md",
         parent: "3 Implementation",
     },
+    {
+        id: 10,
+        title: "3.2 Ver- & Entschlüsselung",
+        location: "/static/markdown/3/3.2.Ver-Entschlüsselung.md",
+        parent: "3 Implementation",
+    },
 
 ];
 
