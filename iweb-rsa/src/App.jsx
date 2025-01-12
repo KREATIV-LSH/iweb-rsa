@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router";
 
 function App() {
 
@@ -12,12 +13,7 @@ function App() {
                 <p className="mb-8 text-center max-w-2xl">
                     ....
                 </p>
-                <button
-                    type="button"
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={() => {window.location = "/article/1";}}> {/* Bad practice, Link to element wont work tho */}
-                    Beginne!
-                </button>
+                <Link to="/article/1" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Beginne!</Link>
             </main>
             <footer className="bg-gray-800 p-4 text-center">
                 <p>&copy; 2024 Luis Hutterli</p>

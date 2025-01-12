@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import { chapters, chaptersData } from "./Chapters";
@@ -68,28 +68,26 @@ function Article() {
                     <div className="flex-grow p-4 overflow-auto">
                         <div>{reactContent}</div>
                         <div className="flex mt-4">
-                            <button
-                                type="button"
-                                className={classNames("bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded", {
-                                    "bg-gray-500 cursor-not-allowed hover:bg-gray-500": id === 1,
-                                })}
-                                onClick={() => {
-                                    window.location = `/article/${id - 1}`;
-                                }}
-                                disabled={id === 1}>
-                                Zurück
-                            </button>
-                            <button
-                                type="button"
-                                className={classNames("bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-auto", {
-                                    "bg-gray-500 cursor-not-allowed hover:bg-gray-500": id === chaptersData.length,
-                                })}
-                                onClick={() => {
-                                    window.location = `/article/${id + 1}`;
-                                }}
-                                disabled={id === chaptersData.length}>
-                                Weiter
-                            </button>
+                            {id === 1 ? (
+                                <div className="bg-gray-500 cursor-not-allowed text-white font-bold py-2 px-4 rounded">Zurück</div>
+                            ) : (
+                                <Link
+                                    to={`/article/${id - 1}`}
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Zurück
+                                </Link>
+                            )}
+                            {id === chaptersData.length ? (
+                                <div className="bg-gray-500 cursor-not-allowed text-white font-bold py-2 px-4 rounded ml-auto">
+                                    Weiter
+                                </div>
+                            ) : (
+                                <Link
+                                    to={`/article/${id + 1}`}
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-auto">
+                                    Weiter
+                                </Link>
+                            )}
                         </div>
                     </div>
                 </div>
