@@ -17,6 +17,7 @@ import "katex/dist/katex.min.css";
 import VisKeyGeneration from "./components/visualizations/VisKeyGeneration";
 import VisPrimCheck from "./components/visualizations/VisPrimCheck";
 import VisPrimGen from "./components/visualizations/VisPrimGen";
+import VisEnDecode from "./components/visualizations/VisEnDecode";
 
 function Article() {
     // Markdown rendering
@@ -41,6 +42,7 @@ function Article() {
                 viskeygen: VisKeyGeneration,
                 visprimcheck: VisPrimCheck,
                 visprimgen: VisPrimGen,
+                visendecode: VisEnDecode,
             },
         },
     });

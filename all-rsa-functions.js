@@ -15,19 +15,16 @@ function mrt(n, basis) {
     let tempExponent = exponent;
     while ((tempExponent = Math.floor(tempExponent / 2)) > 0) {
         aktuellesErgebnis = (aktuellesErgebnis * aktuellesErgebnis) % n;
-        if (tempExponent % 2 === 1)
-            result = (result * aktuellesErgebnis) % n
+        if (tempExponent % 2 === 1) result = (result * aktuellesErgebnis) % n;
     }
 
     // Erste Bedinungen
-    if (result === 1 || result === n - 1)
-        return true;
+    if (result === 1 || result === n - 1) return true;
 
     // Weitere Bedingungen
     while (--halbierungen > 0 && result > 1) {
         result = (result * result) % n;
-        if (result === n - 1)
-            return true;
+        if (result === n - 1) return true;
     }
     return false;
 }
@@ -42,15 +39,16 @@ function istPrim(n, wiederholungen = 5) {
         // Zufällige Basis zwischen 2 und Zahl - 2
         const basis = Math.floor(Math.random() * (n - 3)) + 2;
 
-        if (!mrt(n, basis))
-            return false; // Sobald eine Basis nicht wahrschenlich Prim ist, ist die Zahl nicht Prim
+        if (!mrt(n, basis)) return false; // Sobald eine Basis nicht wahrschenlich Prim ist, ist die Zahl nicht Prim
     }
 
     return true;
 }
 
 // Die ersten 30 Primzahlen
-const knownPrimes = [3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127];
+const knownPrimes = [
+    3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127,
+];
 
 function erstellePrim(minimum, maximum) {
     let zuffalsZahl;
@@ -61,7 +59,7 @@ function erstellePrim(minimum, maximum) {
         // Zufällige Zahl zwischen minimum und maximum
         zuffalsZahl = Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
         zuffalsZahl |= 1;
-        
+
         // Prüfen, ob die Zahl durch bekannte Primzahlen teilbar ist
         let hasKnownMod = false;
         for (const prime of knownPrimes) {
@@ -74,7 +72,7 @@ function erstellePrim(minimum, maximum) {
 
         isPrim = istPrim(zuffalsZahl);
     }
-        
+
     return zuffalsZahl;
 }
 
@@ -139,14 +137,14 @@ function erstelleSchluessel(keySize) {
     const { p, q } = erstelleSchluesselPrim(keySize); // 1. Primzahlen erstellen
     console.log("p:", p);
     console.log("q:", q);
-    const n = p * q;                                  // 2. Modulos berechnen
-    const phi_n = (p - 1) * (q - 1);                  // 3. Eulerische Phi-Funktion berechnen
-    const e = erstelleE(phi_n);                       // 4. Öffentlicher Exponent berechnen
-    const d = modInverse(e, phi_n);                   // 5. Privater Exponent berechnen
+    const n = p * q; // 2. Modulos berechnen
+    const phi_n = (p - 1) * (q - 1); // 3. Eulerische Phi-Funktion berechnen
+    const e = erstelleE(phi_n); // 4. Öffentlicher Exponent berechnen
+    const d = modInverse(e, phi_n); // 5. Privater Exponent berechnen
 
     return {
-        publicKey: { e, n },     // Öffentlicher Schlüssel bestehend aus dem öffentlichen Exponenten und dem Modulos
-        privateKey: { d, n }     // Privater Schlüssel bestehend aus dem privaten Exponenten und dem Modulos
+        publicKey: { e, n }, // Öffentlicher Schlüssel bestehend aus dem öffentlichen Exponenten und dem Modulos
+        privateKey: { d, n }, // Privater Schlüssel bestehend aus dem privaten Exponenten und dem Modulos
     };
 }
 
@@ -194,19 +192,73 @@ function entschluesseln(ciphertext, privateKey) {
     return numberToText(m);
 }
 
+// Helper function to convert ArrayBuffer to hex string
+function bufferToHex(buffer) {
+    return Array.prototype.map.call(new Uint8Array(buffer), (x) => `00${x.toString(16)}`.slice(-2)).join("");
+}
 
-const keySize = 50;
-const { publicKey, privateKey } = erstelleSchluessel(keySize);
-console.log("Öffentlicher Schlüssel:", publicKey);
-console.log("Privater Schlüssel:", privateKey);
+// Function to hash a message using SHA-256
+async function hashNachricht(nachricht) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(nachricht);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    return bufferToHex(hashBuffer);
+}
 
-const nachricht = "abcdef";
-console.log("Nachricht:", nachricht);
-console.log("Nachricht:", textToNumber(nachricht));
+async function signiereNachricht(nachricht, privateKey) {
+    const { d, n } = privateKey;
+    // Nachricht aufteilen (Siehe 3.2)
+    const parts = nachrichtAufteilen(nachricht, n);
+    // Jeden Teil hashen und signieren
+    const signatures = [];
+    for (const part of parts) {
+        const hash = await hashNachricht(part);
+        const signature = modPow(BigInt(`0x${hash}`), BigInt(d), BigInt(n));
+        signatures.push(signature);
+    }
+    return signatures;
+}
 
-const ciphertext = verschluesseln(nachricht, publicKey);
-console.log("Ciphertext:", ciphertext.toString());
+async function verifiziereSignatur(nachricht, signatur, publicKey) {
+    const { e, n } = publicKey;
+    // Nachricht auch aufteilen und hashen
+    const originalParts = nachrichtAufteilen(nachricht, n);
+    const hashes = [];
+    for (const part of originalParts) {
+        const hash = await hashNachricht(part);
+        hashes.push(hash);
+    }
 
-const entschluesselteNachricht = entschluesseln(ciphertext, privateKey);
-console.log("Entschlüsselte Nachricht:", textToNumber(entschluesselteNachricht));
-console.log("Entschlüsselte Nachricht:", entschluesselteNachricht);
+    // Jeden Teil entschlüsseln
+    const parts = signatur.map((s) => modPow(s, BigInt(e), BigInt(n)).toString(16));
+
+    // Beide Hashes vergleichen
+    return hashes.join("") === parts.join("");
+}
+
+function nachrichtAufteilen(nachricht, n) {
+    const maxLength = Math.floor(Math.log2(n) / 7);
+    const parts = [];
+    for (let i = 0; i < nachricht.length; i += maxLength) {
+        parts.push(nachricht.slice(i, i + maxLength));
+    }
+    return parts;
+}
+
+// Schlüssel erstellen
+const { publicKey, privateKey } = erstelleSchluessel(50); // Schlüssellänge von 50 Bit
+
+/* Hier würde die Übertragung des öffentlichen Schlüssels stattfinden */
+
+const nachricht = "Hallo easy-rsa.ch!";
+
+// Nachricht signieren
+const signatur = await signiereNachricht(nachricht, privateKey);
+console.log(signatur);
+
+/* Hier würde die Nachricht mit der Signatur übertragen werden */
+
+// Nachricht verifizieren
+const verifiziert = await verifiziereSignatur(nachricht, signatur, publicKey);
+
+console.log(verifiziert); // Ausgabe: true

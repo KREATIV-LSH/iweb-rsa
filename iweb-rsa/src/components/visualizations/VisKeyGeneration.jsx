@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { InlineMath } from "react-katex";
+import { modInverse } from "../../utils/rsa";
+
 
 function VisKeyGeneration() {
   const [step, setStep] = useState(1);
@@ -23,10 +25,8 @@ function VisKeyGeneration() {
   };
 
   const calculateD = () => {
-    let dValue = 1;
-    while ((dValue * e) % phi !== 1) {
-      dValue++;
-    }
+    // eslint-disable-next-line no-undef
+    const dValue = modInverse(BigInt(e), BigInt(phi));
     setD(dValue);
     setStep(4);
   };

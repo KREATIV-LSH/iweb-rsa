@@ -59,6 +59,12 @@ const chaptersData = [
         location: "/static/markdown/3/3.2.Ver-Entschlüsselung.md",
         parent: "3 Implementation",
     },
+    {
+        id: 11,
+        title: "3.3 Signierung",
+        location: "/static/markdown/3/3.3.Signierung.md",
+        parent: "3 Implementation",
+    },
 
 ];
 
