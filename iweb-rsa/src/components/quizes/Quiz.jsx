@@ -58,7 +58,7 @@ function Quiz({ title, questions }) {
           <ul className="space-y-1">
             {pastResults.filter((quiz) => quiz.title === title).sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(-3).map((result, index) => (
               <li
-                key={index}
+                key={result.timestamp}
                 className="flex justify-between items-center p-2 bg-gray-700 rounded-md"
               >
                 <span>{new Date(result.timestamp).toLocaleDateString()}</span>

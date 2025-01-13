@@ -19,12 +19,12 @@ function VisPrimGen() {
         }
 
         if (min < 200) {
-            setOutput("Das Minimum muss größer als 200 sein.");
+            setOutput("Das Minimum muss grösser als 200 sein.");
             return
         }
 
         if (min > 1_000_000_000 || max > 1_000_000_000) {
-            setOutput("Die Zahlen dürfen nicht größer als 1'000'000'000 sein.");
+            setOutput("Die Zahlen dürfen nicht grösser als 1'000'000'000 sein.");
             return;
         }
 

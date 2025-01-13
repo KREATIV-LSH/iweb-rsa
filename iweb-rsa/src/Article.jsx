@@ -17,6 +17,7 @@ import VisKeyGeneration from "./components/visualizations/VisKeyGeneration";
 import VisPrimCheck from "./components/visualizations/VisPrimCheck";
 import VisPrimGen from "./components/visualizations/VisPrimGen";
 import VisEnDecode from "./components/visualizations/VisEnDecode";
+import VisKeySizeBruteForce from "./components/visualizations/VisKeySizeBruteForce";
 
 function Article() {
     // Markdown rendering
@@ -40,6 +41,7 @@ function Article() {
                 visprimcheck: VisPrimCheck,
                 visprimgen: VisPrimGen,
                 visendecode: VisEnDecode,
+                viskeysizebruteforce: VisKeySizeBruteForce,
             },
         },
     });

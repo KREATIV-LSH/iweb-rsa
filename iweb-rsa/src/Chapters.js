@@ -65,7 +65,30 @@ const chaptersData = [
         location: "/static/markdown/3/3.3.Signierung.md",
         parent: "3 Implementation",
     },
-
+    {
+        id: 12,
+        title: "4 Sicherheit",
+        location: "/static/markdown/4/4.Sicherheit.md",
+        parent: null,
+    },
+    {
+        id: 13,
+        title: "5 Optimierung",
+        location: "/static/markdown/5/5.Optimierung.md",
+        parent: null,
+    },
+    {
+        id: 14,
+        title: "6 Andere Verfahren",
+        location: "/static/markdown/6/6.AndereVerfahren.md",
+        parent: null,
+    },
+    {
+        id: 15,
+        title: "7 Prüfung",
+        location: "/static/markdown/7/7.Prüfung.md",
+        parent: null,
+    },
 ];
 
 const chapters = await fetchChapters();
