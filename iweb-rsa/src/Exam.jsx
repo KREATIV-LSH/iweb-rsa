@@ -34,39 +34,28 @@ function Exam() {
                 }
             }
 
-            console.log("Multiple choice Points");
-            console.log(points);
             if (points < 0) points = 0;
             setPoints((prev) => prev + points);
         } else {
             setPoints((prev) => prev + points);
         }
 
-
-
         if (tDoneCard !== null) {
-            console.log("set current topic: ", tCurrentTopic + 1);
             tCurrentTopic++;
             tDoneCard = null;
         } else {
-            console.log("set done card: ", tCurrentCard);
             tDoneCard = tCurrentCard;
         }
 
         setCurrentTopic(tCurrentTopic);
         if (tCurrentTopic === topics.length) return;
 
-
         setShowAnswer(false);
         let rnd = randomIndex(topics[tCurrentTopic].cards.length);
         while (rnd === tDoneCard) {
             rnd = randomIndex(topics[tCurrentTopic].cards.length);
         }
-        console.log("rnd, doneCard");
-        console.log(rnd, tDoneCard);
         tCurrentCard = rnd;
-
-        console.log("Current Topic ", tCurrentTopic);
 
         setTextAnswer("");
         for (const checkbox of checkboxesRef.current) {
@@ -79,6 +68,7 @@ function Exam() {
 
     const randomIndex = (length) => Math.floor(Math.random() * length);
 
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
         const rnd = randomIndex(topics[currentTopic].cards.length);
         setCurrentTopic(0);
@@ -132,7 +122,9 @@ function Exam() {
                                     <input
                                         type="checkbox"
                                         className="mr-2"
-                                        ref={(el) => (checkboxesRef.current[index] = el)}
+                                        ref={(el) => {
+                                            checkboxesRef.current[index] = el;
+                                        }}
                                         disabled={showAnswer}
                                     />
                                     {choice}
