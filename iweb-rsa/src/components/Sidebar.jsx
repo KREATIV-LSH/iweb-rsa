@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import PropTypes from "prop-types";
+import { Link } from "react-router";
 
 function Sidebar({ chaptersData, currentId }) {
     const [isOpen, setIsOpen] = useState(true);
@@ -18,18 +19,18 @@ function Sidebar({ chaptersData, currentId }) {
             <button type="button" className="p-2 bg-gray-800 focus:outline-none" onClick={toggleSidebar}>
                 <FontAwesomeIcon icon={faBars} />
             </button>
-            <aside className={!isOpen ? "hidden" : "w-1/4 max-w-44 bg-gray-800 border-r border-gray-700 p-4 pl-0"}>
+            <aside className={!isOpen ? "hidden" : "w-1/4 max-w-56 bg-gray-800 border-r border-gray-700 p-4 pl-0"}>
                 <ul className="space-y-2">
                     {parentChapters.map((chapter) => {
                         const subChapters = childChapters.filter((childChapter) => childChapter.parent === chapter.title);
                         return (
                             <li key={chapter.title} className={`${(chapter.id === currentId) && 'font-bold'} hover:text-white`}>
-                                <button type="button" onClick={() => {window.location = `/article/${chapter.id}`;}}>{chapter.title}</button>
+                                <Link to={`/article/${chapter.id}`}>{chapter.title}</Link>
                                 {subChapters && (
                                     <ul className="pl-4">
                                         {subChapters.map((subChapter) => (
                                             <li key={subChapter.title} className={`${(subChapter.id === currentId) ? 'font-bold' : 'font-normal'} hover:text-white`}>
-                                                <button type="button" onClick={() => {window.location = `/article/${subChapter.id}`;}}>{subChapter.title}</button>
+                                                <Link to={`/article/${subChapter.id}`}>{subChapter.title}</Link>
                                             </li>
                                         ))}
                                     </ul>

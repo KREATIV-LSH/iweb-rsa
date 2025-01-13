@@ -13,6 +13,8 @@ function VisEnDecode() {
 
     const [decryptedMessage, setDecryptedMessage] = useState("");
 
+    const [messageError, setMessageError] = useState("");
+
     const createKeys = () => {
         const keys = erstelleSchluessel(32);
         setPublicKey(keys.publicKey);
@@ -22,9 +24,14 @@ function VisEnDecode() {
 
     const encryptMessage = () => {
         if (message.length === 0) return;
+        if (message.length > 150) {
+            setMessageError("Nachricht zu lang. Maximal 150 Zeichen");
+            return;
+        }
         const parts = nachrichtAufteilen(message, publicKey.n);
         const encryptedParts = parts.map((part) => verschluesseln(part, publicKey));
         setEncryptedMessage(encryptedParts.join(", "));
+        setMessageError("");
         setStep(3);
     };
 
@@ -98,13 +105,13 @@ function VisEnDecode() {
                         </button>
                     )}
                     {step >= 3 && (
-                        <p>
+                        <p className="break-words">
                             Aufgeteilte Nachricht: <InlineMath>{nachrichtAufteilen(message, publicKey.n).join(", ")}</InlineMath>{" "}
                             <br />
-                            Nachricht in Zahlen:{" "}
-                            <InlineMath>{nachrichtAufteilen(message, publicKey.n).map(textToNumber).join(", ")}</InlineMath>
+                            Nachricht in Zahlen: {nachrichtAufteilen(message, publicKey.n).map(textToNumber).join(", ")}
                         </p>
                     )}
+                    {messageError && <p className="text-red-500">{messageError}</p>}
                 </motion.div>
             )}
 
@@ -114,8 +121,8 @@ function VisEnDecode() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                     className="space-y-4">
-                    <p className="text-xl">
-                        <strong>3. Verschlüsselte Nachricht:</strong> <InlineMath>{encryptedMessage}</InlineMath>
+                    <p className="text-xl break-words">
+                        <strong>3. Verschlüsselte Nachricht:</strong> {encryptedMessage}
                     </p>
                     {step === 3 && (
                         <button
@@ -134,7 +141,7 @@ function VisEnDecode() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                     className="space-y-4">
-                    <p className="text-xl">
+                    <p className="text-xl break-words">
                         <strong>4. Entschlüsselte Nachricht:</strong> <InlineMath>{decryptedMessage}</InlineMath>
                     </p>
                 </motion.div>

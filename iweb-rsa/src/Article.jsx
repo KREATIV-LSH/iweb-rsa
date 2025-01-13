@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
@@ -11,7 +11,6 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/atom-one-dark.css";
 import rehypeHighlightCodeLines from "rehype-highlight-code-lines";
 import remarkCodeTitles from "remark-flexible-code-titles";
-import classNames from "classnames";
 import { Quiz_1, Quiz_1_2 } from "./components/quizes/Quizes";
 import "katex/dist/katex.min.css";
 import VisKeyGeneration from "./components/visualizations/VisKeyGeneration";
@@ -21,8 +20,6 @@ import VisEnDecode from "./components/visualizations/VisEnDecode";
 
 function Article() {
     // Markdown rendering
-
-    // TODO: Check out https://github.com/rehypejs/rehype-highlight
     const [reactContent, setMarkdownSource] = useRemark({
         rehypePlugins: [rehypeKatex, rehypeRaw, rehypeHighlight, [rehypeHighlightCodeLines, { showLineNumbers: true }]],
         remarkToRehypeOptions: { allowDangerousHtml: true },
@@ -53,6 +50,9 @@ function Article() {
     const { id: strId } = useParams();
     const id = Number.parseInt(strId);
 
+    const [searchValue, setSearchValue] = useState("");
+    const [filteredChapters, setFilteredChapters] = useState(chaptersData);
+
     useEffect(() => {
         if (!chaptersData.some((chapter) => chapter.id === id) || Number.isNaN(id)) {
             navigate("/");
@@ -61,12 +61,31 @@ function Article() {
         }
     }, [id, setMarkdownSource, navigate]);
 
+    useEffect(() => {
+        if (searchValue.trim() === "") {
+            setFilteredChapters(chaptersData);
+        } else {
+            const lowerCaseSearchValue = searchValue.toLowerCase();
+            let filtered = chaptersData.filter((chapter) =>
+                chapter.title.toLowerCase().includes(lowerCaseSearchValue)
+            );
+    
+            if (filtered.length === 0) {
+                filtered = chaptersData.filter((chapter) =>
+                    chapter.content?.toLowerCase().includes(lowerCaseSearchValue)
+                );
+            }
+    
+            setFilteredChapters(filtered);
+        }
+    }, [searchValue]);
+
     return (
         <div className="flex h-screen bg-gray-900 text-gray-200">
             <div className="flex flex-col h-screen w-screen">
-                <Header />
+                <Header searchValue={searchValue} setSearchValue={setSearchValue} />
                 <div className="flex flex-grow overflow-hidden">
-                    <Sidebar chaptersData={chaptersData} currentId={id} />
+                    <Sidebar chaptersData={filteredChapters} currentId={id} />
                     <div className="flex-grow p-4 overflow-auto">
                         <div>{reactContent}</div>
                         <div className="flex mt-4">

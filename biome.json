@@ -21,7 +21,8 @@
             "bracketSpacing": true,
             "quoteStyle":"double",
             "semicolons":"always",
-            "lineWidth": 135
+            "lineWidth": 135,
+            "lineEnding":"lf"
         }
     }
 }

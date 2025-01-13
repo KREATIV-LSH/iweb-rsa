@@ -16,6 +16,11 @@ export default defineConfig(({ mode }) => {
             importPrefixPlugin(),
             htmlPlugin(mode),
         ],
+        esbuild: {
+            supported: {
+                "top-level-await": true,
+            },
+        },
     };
 });
 function setEnv(mode) {
