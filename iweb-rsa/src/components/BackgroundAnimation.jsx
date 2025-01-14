@@ -3,7 +3,7 @@ import React from "react";
 
 const BackgroundAnimation = () => {
     const generateRandomStyle = () => {
-        const randomX = Math.floor(Math.random() * 100);
+        const randomX = Math.floor(Math.random() * 98);
         const randomDuration = Math.random() * 10 + 10;
         const randomDelay = Math.random() * 5;
         return {
@@ -16,7 +16,7 @@ const BackgroundAnimation = () => {
 
     return (
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden bg-gray-900">
-            {[...Array(30).keys()].map((i) => (
+            {[...Array(10).keys()].map((i) => (
                 <div
                     key={i}
                     className="absolute text-white text-opacity-10 text-2xl animate-float italic"
