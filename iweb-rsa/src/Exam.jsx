@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { topics } from "./examTopics";
+import { Link } from "react-router";
 
 function Exam() {
     const [currentTopic, setCurrentTopic] = useState(0);
@@ -89,6 +90,7 @@ function Exam() {
                     <p>
                         Das wäre eine Note <strong>{((points / (topics.length * 2)) * 5 + 1).toFixed(1)}</strong>
                     </p>
+                    <Link to="/" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Zurück zum Start</Link>
                 </main>
                 <footer className="bg-gray-800 p-4 text-center z-10">
                     <p>&copy; 2025 Luis Hutterli</p>
@@ -107,7 +109,7 @@ function Exam() {
 
                 {/* Card */}
                 <div className="bg-gray-800 p-4 rounded-lg shadow-md max-w-[800px] w-full mx-10">
-                    <h4>{topics[currentTopic].cards[currentCard].question}</h4>
+                    <h4 className="m-2">{topics[currentTopic].cards[currentCard].question}</h4>
                     {topics[currentTopic].cards[currentCard].type === "text" && (
                         <textarea
                             className="w-full h-32 p-2 bg-gray-700 text-gray-200 rounded-md"
