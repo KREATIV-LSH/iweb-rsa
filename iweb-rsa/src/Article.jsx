@@ -68,17 +68,31 @@ function Article() {
             setFilteredChapters(chaptersData);
         } else {
             const lowerCaseSearchValue = searchValue.toLowerCase();
-            let filtered = chaptersData.filter((chapter) =>
-                chapter.title.toLowerCase().includes(lowerCaseSearchValue)
-            );
-    
+            let filtered = chaptersData.filter((chapter) => chapter.title.toLowerCase().includes(lowerCaseSearchValue));
+
             if (filtered.length === 0) {
-                filtered = chaptersData.filter((chapter) =>
-                    chapter.content?.toLowerCase().includes(lowerCaseSearchValue)
-                );
+                filtered = chaptersData.filter((chapter) => chapter.content?.toLowerCase().includes(lowerCaseSearchValue));
             }
-    
-            setFilteredChapters(filtered);
+
+
+            const resolveParents = (chapter) => {
+                const parent = chaptersData.find((c) => c.title === chapter.parent);
+                if (!parent) return [];
+                if (parent.parent) return [parent, ...resolveParents(parent)];
+                return [parent];
+            };
+
+            let parents = [];
+
+            for (const chapter of filtered) {
+                if (!chapter.parent) continue;
+                if (filtered.find((c) => c.title === chapter.parent)) continue;
+                if (parents.find((c) => c.title === chapter.parent)) continue;
+                parents = [...parents, ...resolveParents(chapter)];
+            }
+
+            const allFiltered = [...filtered, ...parents];
+            setFilteredChapters(allFiltered);
         }
     }, [searchValue]);
 
